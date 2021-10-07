@@ -1,8 +1,4 @@
-use std::{
-    error::Error,
-    fs::File,
-    path::{Path, PathBuf},
-};
+use std::{error::Error, fs::File, path::Path};
 
 use csv::ReaderBuilder;
 use encoding_rs::WINDOWS_1252;
