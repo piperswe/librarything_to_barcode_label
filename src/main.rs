@@ -2,6 +2,7 @@ use std::{fs::File, io::Write, path::PathBuf};
 
 use clap::arg_enum;
 use eyre::Result;
+use items::Item;
 use structopt::StructOpt;
 
 mod items;
@@ -53,25 +54,23 @@ impl Opt {
 fn main() -> Result<()> {
     let opt = Opt::from_args_safe()?;
     let item_iter = items::read_items(&opt.input)?;
-    let mut items = vec![];
-    for item in item_iter {
-        let item = item?;
+    let items = item_iter.map(Result::unwrap).filter(|item: &Item| {
         if let Some(start) = opt.start {
-            if item.barcode.parse::<usize>()? < start {
-                continue;
+            if item.barcode.parse::<usize>().unwrap() < start {
+                return false;
             }
         }
         if let Some(end) = opt.end {
-            if item.barcode.parse::<usize>()? > end {
-                continue;
+            if item.barcode.parse::<usize>().unwrap() > end {
+                return false;
             }
         }
         if item.collections.contains("Coming Soon") {
-            continue;
+            return false;
         }
-        items.push(item);
-    }
-    let rendered = renderer::render_page(&items, &opt)?;
+        true
+    });
+    let rendered = renderer::render_page(items, &opt)?;
     if let Some(output) = &opt.output {
         let mut file = File::create(output)?;
         file.write_all(rendered.as_bytes())?;

@@ -11,7 +11,10 @@ struct LabelsTemplate<'a> {
     opt: &'a Opt,
 }
 
-pub fn render_page(items: &[Item], opt: &Opt) -> Result<String> {
-    let tmpl = LabelsTemplate { items, opt };
+pub fn render_page(items: impl Iterator<Item = Item>, opt: &Opt) -> Result<String> {
+    let tmpl = LabelsTemplate {
+        items: &items.collect::<Vec<Item>>(),
+        opt,
+    };
     Ok(tmpl.render()?)
 }
