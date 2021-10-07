@@ -1,4 +1,8 @@
-use std::{error::Error, fs::File, path::PathBuf};
+use std::{
+    error::Error,
+    fs::File,
+    path::{Path, PathBuf},
+};
 
 use csv::ReaderBuilder;
 use encoding_rs::WINDOWS_1252;
@@ -27,7 +31,7 @@ impl Item {
     }
 }
 
-pub fn read_items(from: &PathBuf) -> Result<impl Iterator<Item = Result<Item, impl Error>>> {
+pub fn read_items(from: &Path) -> Result<impl Iterator<Item = Result<Item, impl Error>>> {
     let rdr = ReaderBuilder::new()
         .delimiter(b'\t')
         .has_headers(true)
@@ -46,14 +50,14 @@ pub fn process_lcc(lcc: &str) -> String {
     let mut since_last_zwsp = 0;
     for ch in lcc.chars() {
         if let Some(last) = last {
-            if (ch.is_alphabetic() && last.is_numeric())
+            if ((ch.is_alphabetic() && last.is_numeric())
                 || (ch.is_numeric() && last.is_alphabetic())
-                || ch == '.'
+                || ch == '.')
+                && last != '.'
+                && last_last != Some('.')
             {
-                if last != '.' && last_last != Some('.') {
-                    s.push('\u{200B}');
-                    since_last_zwsp = 0;
-                }
+                s.push('\u{200B}');
+                since_last_zwsp = 0;
             }
         }
         if since_last_zwsp >= 5 {

@@ -3,4 +3,5 @@
   "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true,
   "html.format.enable": false,
+  "rust-analyzer.checkOnSave.command": "clippy",
 }
