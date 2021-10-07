@@ -104,7 +104,7 @@
     <div class="item-container">
         <div class="item">
             <div class="barcode">
-                {{ crate::renderer::render_barcode(item.barcode).unwrap() | safe }}
+                {{ item.render_barcode().unwrap() | safe }}
                 <span>{{ item.barcode }}</span>
             </div>
             <div class="call">

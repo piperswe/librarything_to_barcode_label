@@ -1,5 +1,6 @@
 use std::{error::Error, fs::File, path::Path};
 
+use barcoders::{generators::svg::SVG, sym::code39::Code39};
 use csv::ReaderBuilder;
 use encoding_rs::WINDOWS_1252;
 use encoding_rs_io::DecodeReaderBytesBuilder;
@@ -24,6 +25,13 @@ impl Item {
             CallNumber::LCC => process_lcc(&self.lc_classification),
             CallNumber::Dewey => self.dewey_decimal.clone(),
         }
+    }
+
+    pub fn render_barcode(&self) -> Result<String> {
+        let barcode = Code39::new(&self.barcode)?;
+        let svg = SVG::new(32);
+        let encoded = barcode.encode();
+        Ok(svg.generate(&encoded)?)
     }
 }
 
