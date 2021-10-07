@@ -4,7 +4,7 @@ how to use
  2. run this command
    
     ```sh
-    cargo run -- -o labels.html --start n xxx.tsv
+    cargo run --release -- -o labels.html --start n xxx.tsv
     ```
 
     where n is the starting barcode and xxx.tsv is the path to your exported library
