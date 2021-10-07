@@ -17,6 +17,8 @@ pub struct Item {
     pub lc_classification: String,
     #[serde(alias = "Dewey Decimal")]
     pub dewey_decimal: String,
+    #[serde(alias = "Collections")]
+    pub collections: String,
 }
 
 impl Item {

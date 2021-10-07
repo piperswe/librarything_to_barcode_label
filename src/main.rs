@@ -66,6 +66,9 @@ fn main() -> Result<()> {
                 continue;
             }
         }
+        if item.collections.contains("Coming Soon") {
+            continue;
+        }
         items.push(item);
     }
     let rendered = renderer::render_page(&items, &opt)?;
