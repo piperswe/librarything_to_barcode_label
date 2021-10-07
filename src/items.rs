@@ -64,6 +64,9 @@ pub fn process_lcc(lcc: &str) -> String {
                 since_last_zwsp = 0;
             }
         }
+        if ch.is_whitespace() {
+            since_last_zwsp = 0;
+        }
         if since_last_zwsp >= 5 {
             s.push('\u{200B}');
             since_last_zwsp = 0;
