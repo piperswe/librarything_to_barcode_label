@@ -6,8 +6,7 @@
   inputs.flake-compat.flake = false;
 
   outputs = { self, nixpkgs, flake-utils, naersk, flake-compat }:
-    let
-    flake = flake-utils.lib.eachDefaultSystem (system:
+  flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages."${system}";
         naersk-lib = naersk.lib."${system}";
@@ -31,10 +30,9 @@
           nativeBuildInputs = with pkgs; [ rustc cargo rust-analyzer pkgconfig nixpkgs-fmt ];
           RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
         };
+
+        hydraJobs = {
+          inherit packages;
+        };
       });
-    in flake // {
-      hydraJobs = {
-        inherit (flake) packages devShell;
-      };
-    };
 }
