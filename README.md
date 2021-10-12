@@ -8,3 +8,9 @@ how to use
     ```
 
     where n is the starting barcode and xxx.tsv is the path to your exported library
+
+    alternatively, if you have nix, you can use this command and not have to bother installing Rust or checking out this repo:
+
+    ```sh
+    nix run github:piperswe/librarything_to_barcode_label -- -o labels.html --start n xxx.tsv
+    ```
